@@ -22,3 +22,13 @@ K: 2
 alpha: 2
 
 caching_load: 1
+
+n-runs: 1
+
+first-time : 1
+
+dropout: 0.1
+
+lr: 0.001
+
+epoch: 1000
