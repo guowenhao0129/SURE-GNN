@@ -3,7 +3,9 @@ subgraph
 SURE-GNN: Subgraph-Level Graph Neural Network against Heterophily for Fraud Detection
 
 dataset: YelpChi, Amazon, T-Finance, T-Social.
+
 The Yelp and Amazon datasets will be automatically downloaded from the Internet. 
+
 The T-Finance and T-Social datasets developed in the paper are on [google drive](https://drive.google.com/drive/folders/1PpNwvZx_YRSCDiHaBUmRIS3x1rZR7fMr?usp=sharing). Download and unzip all files in the `dataset` folder.
 
 parameters:
