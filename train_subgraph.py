@@ -19,30 +19,22 @@ def get_best_f1(labels, probs):
     return best_f1, best_thre
 
 def train_subgraph(model, sg_graph, args):
-    print('train_bw sg_graph',sg_graph)
     features = sg_graph.ndata['feature'].to('cuda')
-    if features.dtype == torch.float64 or torch.int64:
-        features = features.float()
     labels = sg_graph.ndata['label'].to('cuda')
-
     train_mask = sg_graph.ndata['train_mask'].clone().detach().to('cuda')
     val_mask = sg_graph.ndata['valid_mask'].clone().detach().to('cuda')
     test_mask = sg_graph.ndata['test_mask'].clone().detach().to('cuda')
-
     train_mask = train_mask.to(torch.bool)
     val_mask = val_mask.to(torch.bool)
     test_mask = test_mask.to(torch.bool)
-    print('train/dev/test samples: ', train_mask.sum().item(), val_mask.sum().item(), test_mask.sum().item())
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
     best_f1, final_tf1, final_trec, final_tpre, final_tmf1, final_tauc = 0., 0., 0., 0., 0., 0.
     best_loss = 100
     best_auc = 0
     best_pre = 0
     best_score= 0
-
     weight = (1 - labels[train_mask]).sum().item() / labels[train_mask].sum().item()
     early_stop = EarlyStop(patience=100)
-
     for e in range(1, args.epochs + 1):
         model.train()
         optimizer.zero_grad()
@@ -76,7 +68,6 @@ def train_subgraph(model, sg_graph, args):
         if e % 10 == 0:
             print('Epoch {}, loss: {:.4f}, final_tmf1 {:.4f},final_tauc: {:.4f}'
                   .format(e, best_loss,  final_tmf1, final_tauc, best_pre))
-
     final_tauc = best_auc
     final_pred = pred_y[:, 1].unsqueeze(1)
     return final_tmf1, final_tauc, final_pred, final_logit
