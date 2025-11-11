@@ -129,16 +129,11 @@ if __name__ == '__main__':
     argparser.add_argument('--evaluation_epoch', type=int, default=1000)
     argparser.add_argument('--caching_load', type=int, default=1)
     argparser.add_argument('--adjust', type=int, default=1,help="adaptive adjustment")
-    argparser.add_argument('--adjust', type=float, default=0.5, help="adaptive adjustmentthreshold")
+    argparser.add_argument('--ada_tau', type=float, default=0.5, help="adaptive adjustment threshold")
     argparser.add_argument('--alpha', type=float, default=0.5)
-
-    argparser.add_argument('--batch_size', type=int, default=128)
-    argparser.add_argument('--n_layer', type=int, default=1)
     argparser.add_argument('--num_trans', type=int, default=1)
     argparser.add_argument('--proj', type=bool, default=True)
     argparser.add_argument('--patience', type=int, default=100)
-    argparser.add_argument("--del_ratio", type=float, default=0., help="delete ratios")
-
     args = argparser.parse_args()
     device = torch.device("cpu") if args.gpu < 0 else torch.device("cuda:" + str(args.gpu))
     args.device = device
